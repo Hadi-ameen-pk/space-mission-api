@@ -1,9 +1,14 @@
 from rest_framework.views import APIView
+from rest_framework import viewsets
+from django.contrib.auth.models import User
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import status
 from .models import Mission
 from .serializers import MissionSerializer
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import permission_classes
 
 
 class MissionListAPIView(APIView):
@@ -58,3 +63,28 @@ class MissionDetailAPIView(APIView):
 
         mission.delete()
         return Response({"message": "Mission deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register_user(request):
+    username = request.data.get("username")
+    password = request.data.get("password")
+
+    if not username or not password:
+        return Response({"error": "Username and password required"}, status=400)
+
+    if User.objects.filter(username=username).exists():
+        return Response({"error": "User already exists"}, status=400)
+
+    user = User.objects.create_user(username=username, password=password)
+    return Response({"message": "User created successfully"}, status=201)
+
+class MissionViewSet(viewsets.ModelViewSet):
+    queryset = Mission.objects.all()
+    serializer_class = MissionSerializer
+
+    def get_permissions(self):
+        if self.request.method in ['GET']:
+            return [IsAuthenticatedOrReadOnly()]
+        else:
+            return [IsAdminUser()]
