@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import api from "../services/api";
+import SpaceFacts from "../components/SpaceFacts";
+import SpaceTimeline from "../components/SpaceTimeline";
+import FeaturedVideo from "../components/FeaturedVideo";
+import Footer from "../components/Footer";
 
 function Home() {
   const [topics, setTopics] = useState([]);
@@ -36,6 +40,42 @@ function Home() {
           </Link>
         </div>
       </section>
+
+      <section className="stats-section">
+
+        <h2>Space Explorer in Numbers</h2>
+
+        <div className="stats-grid">
+
+          <div className="stat-card">
+            <h3>{topics.length}</h3>
+            <p>Learning Topics</p>
+          </div>
+
+          <div className="stat-card">
+            <h3>
+              {topics.filter(topic => topic.video_url).length}
+            </h3>
+            <p>Educational Videos</p>
+          </div>
+
+          <div className="stat-card">
+            <h3>100%</h3>
+            <p>Responsive Design</p>
+          </div>
+
+          <div className="stat-card">
+            <h3>
+              {new Set(topics.map(topic => topic.category)).size}
+            </h3>
+            <p>Categories</p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <SpaceFacts />
 
       <section className="stats-strip">
         <div className="stat-mini">
@@ -103,10 +143,12 @@ function Home() {
           </div>
         </div>
       </section>
+      
+      <SpaceTimeline />
 
-      <footer className="footer">
-        <p>Space Explorer © 2026 • Learn Beyond Earth</p>
-      </footer>
+      <FeaturedVideo />
+
+      <Footer />
     </div>
   );
 }

@@ -5,6 +5,8 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import TopicDetail from "./pages/TopicDetail";
+import SpaceNews from "./pages/SpaceNews";
+import Certificate from "./pages/Certificate";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/news" element={<SpaceNews />} />
+        <Route path="/certificate" element={<Certificate />} />
       </Routes>
     </BrowserRouter>
   );

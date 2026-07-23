@@ -13,6 +13,8 @@ function Register() {
 
   const registerUser = async (e) => {
     e.preventDefault();
+    
+    console.log("Register button clicked");
 
     try {
       await api.post("/users/register/", form);
@@ -21,11 +23,11 @@ function Register() {
 
       navigate("/login");
     } catch (error) {
-      alert(
-        error.response?.data?.error ||
-        "Registration failed"
-      );
-    }
+        console.log("Status:", error.response?.status);
+        console.log("Data:", error.response?.data);
+
+        alert(JSON.stringify(error.response?.data));
+      }
   };
 
   return (
